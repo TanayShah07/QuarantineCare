@@ -24,14 +24,14 @@ const dateOffset = days => {
 }
 
 const initialPatients = [
-  { id: 'QC001', name: 'Aarav Mehta', age: 32, gender: 'Male', room: '101', admission: dateOffset(-4), readings: [-3,-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[37.2,37.0,36.8,36.7][i],by:'Nurse'})), visits: [dateOffset(-3),dateOffset(-2),dateOffset(-1),dateOffset(0)], notes: 'Responding well to treatment.', outcome: 'Active' },
-  { id: 'QC002', name: 'Ananya Shah', age: 26, gender: 'Female', room: '102', admission: dateOffset(-3), readings: [-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[38.5,38.1,37.8][i],by:'Nurse'})), visits: [dateOffset(-2),dateOffset(0)], notes: 'Continue monitoring fever.', outcome: 'Active' },
-  { id: 'QC003', name: 'Rohan Patel', age: 41, gender: 'Male', room: '103', admission: dateOffset(-5), readings: [-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[36.8,36.7,36.6][i],by:'Nurse'})), visits: [dateOffset(-2),dateOffset(-1)], notes: 'Stable condition.', outcome: 'Active' },
-  { id: 'QC004', name: 'Priya Desai', age: 29, gender: 'Female', room: '104', admission: dateOffset(-2), readings: [-1,0].map((n,i)=>({date:dateOffset(n),temperature:[39.1,38.8][i],by:'Nurse'})), visits: [], notes: 'Under observation.', outcome: 'Active' },
-  { id: 'QC005', name: 'Kabir Joshi', age: 35, gender: 'Male', room: '105', admission: dateOffset(-6), readings: [-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[36.7,36.6,36.5][i],by:'Nurse'})), visits: [dateOffset(-2),dateOffset(-1),dateOffset(0)], notes: 'Recovery progressing.', outcome: 'Active' },
-  { id: 'QC006', name: 'Ishita Rao', age: 24, gender: 'Female', room: '106', admission: dateOffset(-1), readings: [], visits: [], notes: 'New admission.', outcome: 'Active' },
-  { id: 'QC007', name: 'Dev Malhotra', age: 48, gender: 'Male', room: '107', admission: dateOffset(-3), readings: [-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[37.4,37.2,37.0][i],by:'Nurse'})), visits: [dateOffset(-2),dateOffset(0)], notes: 'Monitor temperature.', outcome: 'Active' },
-  { id: 'QC008', name: 'Meera Iyer', age: 31, gender: 'Female', room: '108', admission: dateOffset(-7), readings: [-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[36.6,36.5,36.4][i],by:'Nurse'})), visits: [dateOffset(-2),dateOffset(-1),dateOffset(0)], notes: 'Stable.', outcome: 'Active' }
+  { id: 'QC001', name: 'Aarav Mehta', age: 32, gender: 'Male', room: '1', admission: dateOffset(-4), readings: [-3,-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[37.2,37.0,36.8,36.7][i],by:'Nurse'})), visits: [dateOffset(-3),dateOffset(-2),dateOffset(-1),dateOffset(0)], notes: 'Responding well to treatment.', outcome: 'Active' },
+  { id: 'QC002', name: 'Ananya Shah', age: 26, gender: 'Female', room: '2', admission: dateOffset(-3), readings: [-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[38.5,38.1,37.8][i],by:'Nurse'})), visits: [dateOffset(-2),dateOffset(0)], notes: 'Continue monitoring fever.', outcome: 'Active' },
+  { id: 'QC003', name: 'Rohan Patel', age: 41, gender: 'Male', room: '3', admission: dateOffset(-5), readings: [-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[36.8,36.7,36.6][i],by:'Nurse'})), visits: [dateOffset(-2),dateOffset(-1)], notes: 'Stable condition.', outcome: 'Active' },
+  { id: 'QC004', name: 'Priya Desai', age: 29, gender: 'Female', room: '4', admission: dateOffset(-2), readings: [-1,0].map((n,i)=>({date:dateOffset(n),temperature:[39.1,38.8][i],by:'Nurse'})), visits: [], notes: 'Under observation.', outcome: 'Active' },
+  { id: 'QC005', name: 'Kabir Joshi', age: 35, gender: 'Male', room: '5', admission: dateOffset(-6), readings: [-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[36.7,36.6,36.5][i],by:'Nurse'})), visits: [dateOffset(-2),dateOffset(-1),dateOffset(0)], notes: 'Recovery progressing.', outcome: 'Active' },
+  { id: 'QC006', name: 'Ishita Rao', age: 24, gender: 'Female', room: '6', admission: dateOffset(-1), readings: [], visits: [], notes: 'New admission.', outcome: 'Active' },
+  { id: 'QC007', name: 'Dev Malhotra', age: 48, gender: 'Male', room: '7', admission: dateOffset(-3), readings: [-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[37.4,37.2,37.0][i],by:'Nurse'})), visits: [dateOffset(-2),dateOffset(0)], notes: 'Monitor temperature.', outcome: 'Active' },
+  { id: 'QC008', name: 'Meera Iyer', age: 31, gender: 'Female', room: '8', admission: dateOffset(-7), readings: [-2,-1,0].map((n,i)=>({date:dateOffset(n),temperature:[36.6,36.5,36.4][i],by:'Nurse'})), visits: [dateOffset(-2),dateOffset(-1),dateOffset(0)], notes: 'Stable.', outcome: 'Active' }
 ].map(p => ({...p, temps: p.readings.map(r=>r.temperature)}))
 
 const getData = () => {
@@ -41,6 +41,7 @@ const getData = () => {
     const parsed = JSON.parse(saved)
     return parsed.map(p => ({
       ...p,
+      room: String(Number(p.room) >= 101 && Number(p.room) <= 174 ? Number(p.room) - 100 : p.room),
       readings: Array.isArray(p.readings) ? p.readings :
         (p.temps || []).map((temperature,i)=>({date:dateOffset(-((p.temps || []).length-1-i)),temperature,by:'Legacy record'})),
       visits: Array.isArray(p.visits) ? p.visits : [],
@@ -167,7 +168,7 @@ export default function App() {
     const age = Number(form.age)
     if (!Number.isInteger(age) || age < 1 || age > 120) return notify('Enter a valid age between 1 and 120.')
     if (occupancy >= CAPACITY) return notify('Facility capacity reached. No beds available.')
-    const roomNumber = Array.from({ length: CAPACITY }, (_, i) => 101 + i)
+    const roomNumber = Array.from({ length: CAPACITY }, (_, i) => i + 1)
       .find(n => !active.some(p => p.room === String(n)))
     if (!roomNumber) return notify('No room is currently available.')
     const id = `QC${String(Date.now()).slice(-6)}`
